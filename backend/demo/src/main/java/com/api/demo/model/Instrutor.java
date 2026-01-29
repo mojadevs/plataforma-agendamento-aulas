@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class Instrutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_instrutor;
+    private Long id;
 
     private String nome;
     private String email;
@@ -47,11 +47,11 @@ public class Instrutor {
     }
 
     public Long getId_instrutor() {
-        return id_instrutor;
+        return id;
     }
 
-    public void setId_instrutor(Long id_instrutor) {
-        this.id_instrutor = id_instrutor;
+    public void setId_instrutor(Long id) {
+        this.id = id;
     }
 
     public String getNome() {

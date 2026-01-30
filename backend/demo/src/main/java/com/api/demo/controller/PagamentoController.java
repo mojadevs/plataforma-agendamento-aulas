@@ -1,4 +1,8 @@
 package com.api.demo.controller;
+import com.api.demo.services.AlunoServices;
+import com.api.demo.services.PagamentoServices;
+import org.hibernate.query.Page;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Pagamento;
@@ -8,38 +12,43 @@ import java.util.List;
 @RequestMapping("/pagamentos")
 public class PagamentoController {
 
+    private final PagamentoServices pagamentoServices;
+
+    public PagamentoController(PagamentoServices pagamentoServices){
+        this.pagamentoServices = pagamentoServices;
+    }
+
     @GetMapping("/")
-    public void findAll(){
-        //return services.findAll();
+    public List<Pagamento> findAll(){
+        return pagamentoServices.findAll();
     }
 
     @GetMapping("/{id}")
-    public void findById(
+    public Pagamento findById(
             @PathVariable Long id
     ){
-        // return services.findById(id);
+        return pagamentoServices.findById(id);
     }
 
     @PostMapping("/")
-    public void create(
+    public Pagamento save(
             @RequestBody Pagamento pagamento
     ){
-        //services.create(pagamento)
+        return pagamentoServices.save(pagamento);
     }
 
     @PutMapping("/{id}")
-    public void update(
+    public Pagamento update(
             @PathVariable Long id,
             @RequestBody Pagamento pagamento
     ){
-        // return services.update(id, pagamento);
+        return pagamentoServices.update(id, pagamento);
     }
 
     @DeleteMapping("/{id}")
     public void delete(
             @PathVariable Long id
     ){
-        // services.delete(id);
+        pagamentoServices.delete(id);
     }
 }
-

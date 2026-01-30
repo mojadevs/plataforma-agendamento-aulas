@@ -1,4 +1,6 @@
 package com.api.demo.controller;
+import com.api.demo.services.AlunoServices;
+import com.api.demo.services.AulaServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Aula;
@@ -8,38 +10,42 @@ import java.util.List;
 @RequestMapping("/aulas")
 public class AulaController {
 
-    @GetMapping("/")
-    public void findAll(){
-        //return services.findAll();
+    private final AulaServices aulaServices;
+
+    public AulaController(AulaServices aulaServices){
+        this.aulaServices = aulaServices;
     }
 
+    @GetMapping("/")
+    public List<Aula> findAll(){return aulaServices.findAll();}
+
     @GetMapping("/{id}")
-    public void findById(
+    public Aula findById(
             @PathVariable Long id
     ){
-        // return services.findById(id);
+        return aulaServices.findById(id);
     }
 
     @PostMapping("/")
-    public void create(
+    public Aula save(
             @RequestBody Aula aula
     ){
-        //services.create(aula)
+        return aulaServices.save(aula);
     }
 
     @PutMapping("/{id}")
-    public void update(
+    public Aula update(
             @PathVariable Long id,
             @RequestBody Aula aula
     ){
-        // return services.update(id, aula);
+        return aulaServices.update(id, aula);
     }
 
     @DeleteMapping("/{id}")
     public void delete(
             @PathVariable Long id
     ){
-        // services.delete(id);
+        aulaServices.delete(id);
     }
 }
 

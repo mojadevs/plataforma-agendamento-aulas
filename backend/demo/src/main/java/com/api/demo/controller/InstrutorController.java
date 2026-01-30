@@ -1,4 +1,6 @@
 package com.api.demo.controller;
+import com.api.demo.services.AlunoServices;
+import com.api.demo.services.InstrutorServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Instrutor;
@@ -8,38 +10,44 @@ import java.util.List;
 @RequestMapping("/instrutores")
 public class InstrutorController {
 
+    private final InstrutorServices instrutorServices;
+
+    public InstrutorController(InstrutorServices instrutorServices){
+        this.instrutorServices = instrutorServices;
+    }
+
     @GetMapping("/")
-    public void findAll(){
-        //return services.findAll();
+    public List<Instrutor> findAll(){
+        return instrutorServices.findAll();
     }
 
     @GetMapping("/{id}")
-    public void findById(
+    public Instrutor findById(
             @PathVariable Long id
     ){
-        // return services.findById(id);
+        return instrutorServices.findById(id);
     }
 
     @PostMapping("/")
-    public void create(
+    public Instrutor save(
             @RequestBody Instrutor instrutor
     ){
-        //services.create(instrutor)
+        return instrutorServices.save(instrutor);
     }
 
     @PutMapping("/{id}")
-    public void update(
+    public Instrutor update(
             @PathVariable Long id,
             @RequestBody Instrutor instrutor
     ){
-        // return services.update(id, instrutor);
+        return instrutorServices.update(id, instrutor);
     }
 
     @DeleteMapping("/{id}")
     public void delete(
             @PathVariable Long id
     ){
-        // services.delete(id);
+        instrutorServices.delete(id);
     }
 }
 

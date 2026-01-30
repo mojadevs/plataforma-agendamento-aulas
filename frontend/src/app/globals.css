@@ -2,10 +2,10 @@
 
 :root {
   --cor-primaria: oklch(62.7% 0.194 149.214);
-  --cor-secundaria: oklch(52.7% 0.154 150.069);
-  --cor-terciaria: oklch(96.2% 0.044 156.743);
-  --cor-fundo-primaria: #fcffea;
-  --cor-fundo-secundaria: #f9faf7;
+  --cor-secundaria: oklch(52.935% 0.15121 148.528);
+  --cor-terciaria: oklch(96.168% 0.05855 157.296);
+  --cor-fundo-primaria: #F9F7F3;
+  --cor-fundo-secundaria: #F1EEE7;
 }
 
 body {

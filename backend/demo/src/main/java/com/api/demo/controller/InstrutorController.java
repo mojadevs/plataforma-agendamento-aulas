@@ -1,6 +1,11 @@
 package com.api.demo.controller;
+import com.api.demo.dto.instrutor.InstrutorCreateDTO;
+import com.api.demo.dto.instrutor.InstrutorResponseDTO;
+import com.api.demo.dto.instrutor.InstrutorUpdateDTO;
 import com.api.demo.services.AlunoServices;
 import com.api.demo.services.InstrutorServices;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Instrutor;
@@ -17,30 +22,35 @@ public class InstrutorController {
     }
 
     @GetMapping("/")
-    public List<Instrutor> findAll(){
-        return instrutorServices.findAll();
+    public ResponseEntity<List<InstrutorResponseDTO>> findAll(){
+
+        List<InstrutorResponseDTO> instrutorResponseDTOList =  instrutorServices.findAll();
+        return ResponseEntity.ok(instrutorResponseDTOList);
     }
 
     @GetMapping("/{id}")
-    public Instrutor findById(
+    public ResponseEntity<InstrutorResponseDTO> findById(
             @PathVariable Long id
     ){
-        return instrutorServices.findById(id);
+        InstrutorResponseDTO instrutorResponseDTO = instrutorServices.findById(id);
+        return ResponseEntity.ok(instrutorResponseDTO);
     }
 
     @PostMapping("/")
-    public Instrutor save(
-            @RequestBody Instrutor instrutor
+    public ResponseEntity<InstrutorResponseDTO> save(
+            @RequestBody InstrutorCreateDTO dto
     ){
-        return instrutorServices.save(instrutor);
+        InstrutorResponseDTO instrutorResponseDTO =  instrutorServices.save(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(instrutorResponseDTO);
     }
 
     @PutMapping("/{id}")
-    public Instrutor update(
+    public ResponseEntity<InstrutorResponseDTO> update(
             @PathVariable Long id,
-            @RequestBody Instrutor instrutor
+            @RequestBody InstrutorUpdateDTO dto
     ){
-        return instrutorServices.update(id, instrutor);
+        InstrutorResponseDTO instrutorResponseDTO = instrutorServices.update(id, dto);
+        return ResponseEntity.ok(instrutorResponseDTO);
     }
 
     @DeleteMapping("/{id}")

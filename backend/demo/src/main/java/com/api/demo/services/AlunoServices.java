@@ -1,28 +1,44 @@
 package com.api.demo.services;
 
+import com.api.demo.dto.aluno.AlunoCreateDTO;
+import com.api.demo.dto.aluno.AlunoResponseDTO;
+import com.api.demo.dto.aluno.AlunoUpdateDTO;
+import com.api.demo.mapper.AlunoMapper;
 import com.api.demo.model.Aluno;
 import com.api.demo.repository.AlunoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlunoServices {
 
     private final AlunoRepository alunoRepository;
+    private final AlunoMapper alunoMapper;
 
-    public AlunoServices(AlunoRepository alunoRepository){
+    public AlunoServices(AlunoRepository alunoRepository, AlunoMapper alunoMapper){
         this.alunoRepository = alunoRepository;
+        this.alunoMapper = alunoMapper;
     }
 
-    public List<Aluno> findAll(){
-        return alunoRepository.findAll();
+    public List<AlunoResponseDTO> findAll(){
+        List<Aluno> alunos = alunoRepository.findAll();
+        List<AlunoResponseDTO> alunoResponseDTOList = new ArrayList<>();
+
+        for(Aluno aluno : alunos){
+            alunoResponseDTOList.add(alunoMapper.toDto(aluno));
+        }
+
+        return alunoResponseDTOList;
     }
 
-    public Aluno findById(Long id){
+    public AlunoResponseDTO findById(Long id){
         Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> {
             return new RuntimeException("Aluno não encontrado");
         });
 
-        return aluno;
+        AlunoResponseDTO alunoResponseDTO = alunoMapper.toDto(aluno);
+
+        return alunoResponseDTO;
     }
 
     public void delete(long id){
@@ -33,22 +49,18 @@ public class AlunoServices {
         alunoRepository.delete(aluno);
     }
 
-    public Aluno save(Aluno aluno){
-        return alunoRepository.save(aluno);
+    public AlunoResponseDTO save(AlunoCreateDTO dto){
+        Aluno aluno = alunoMapper.toEntity(dto);
+        return alunoMapper.toDto(alunoRepository.save(aluno));
     }
 
-    public Aluno update(Long id, Aluno aluno_update){
+    public AlunoResponseDTO update(Long id, AlunoUpdateDTO dto){
         Aluno aluno = alunoRepository.findById(id).orElseThrow(()-> {
             return new RuntimeException("Aluno não encontrado");
         });
 
-        aluno.setNome(aluno_update.getNome());
-        aluno.setEmail(aluno_update.getEmail());
-        aluno.setSenha(aluno_update.getSenha());
-        aluno.setTelefone(aluno_update.getTelefone());
-        aluno.setData_cadastro(aluno_update.getData_cadastro());
-        aluno.setAtivo(aluno_update.getAtivo());
+        alunoMapper.updateEntityFromDTO(dto, aluno);
 
-        return alunoRepository.save(aluno);
+        return alunoMapper.toDto(alunoRepository.save(aluno));
     }
 }

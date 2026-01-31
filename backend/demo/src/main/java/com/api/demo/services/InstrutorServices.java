@@ -1,27 +1,43 @@
 package com.api.demo.services;
+import com.api.demo.dto.instrutor.InstrutorCreateDTO;
+import com.api.demo.dto.instrutor.InstrutorResponseDTO;
+import com.api.demo.dto.instrutor.InstrutorUpdateDTO;
+import com.api.demo.mapper.InstrutorMapper;
 import com.api.demo.model.Instrutor;
 import com.api.demo.repository.InstrutorRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InstrutorServices {
 
     private final InstrutorRepository instrutorRepository;
+    private final InstrutorMapper instrutorMapper;
 
-    public InstrutorServices(InstrutorRepository instrutorRepository){
+    public InstrutorServices(InstrutorRepository instrutorRepository, InstrutorMapper instrutorMapper){
         this.instrutorRepository = instrutorRepository;
+        this.instrutorMapper = instrutorMapper;
     }
 
-    public List<Instrutor> findAll(){
-        return instrutorRepository.findAll();
+    public List<InstrutorResponseDTO> findAll(){
+        List<Instrutor> instrutores = instrutorRepository.findAll();
+        List<InstrutorResponseDTO> instrutorResponseDTOList = new ArrayList<>();
+
+        for(Instrutor instrutor : instrutores){
+            instrutorResponseDTOList.add(instrutorMapper.toDto(instrutor));
+        }
+
+        return instrutorResponseDTOList;
     }
 
-    public Instrutor findById(Long id){
+    public InstrutorResponseDTO findById(Long id){
         Instrutor instrutor = instrutorRepository.findById(id).orElseThrow(() -> {
             return new RuntimeException("Instrutor não encontrada");
         });
 
-        return instrutor;
+        InstrutorResponseDTO instrutorResponseDTO = instrutorMapper.toDto(instrutor);
+
+        return instrutorResponseDTO;
     }
 
     public void delete(long id){
@@ -32,23 +48,18 @@ public class InstrutorServices {
         instrutorRepository.delete(instrutor);
     }
 
-    public Instrutor save(Instrutor instrutor){
-        return instrutorRepository.save(instrutor);
+    public InstrutorResponseDTO save(InstrutorCreateDTO dto){
+        Instrutor instrutor = instrutorMapper.toEntity(dto);
+        return instrutorMapper.toDto(instrutorRepository.save(instrutor));
     }
 
-    public Instrutor update(Long id, Instrutor instrutor_update){
+    public InstrutorResponseDTO update(Long id, InstrutorUpdateDTO dto){
         Instrutor instrutor = instrutorRepository.findById(id).orElseThrow(()-> {
             return new RuntimeException("instrutor não encontrado");
         });
 
-        instrutor.setNome(instrutor_update.getNome());
-        instrutor.setEmail(instrutor_update.getEmail());
-        instrutor.setSenha(instrutor_update.getSenha());
-        instrutor.setData_cadastro(instrutor_update.getData_cadastro());
-        instrutor.setPreco_hora(instrutor_update.getPreco_hora());
-        instrutor.setTelefone(instrutor_update.getTelefone());
-        instrutor.setAtivo(instrutor_update.getAtivo());
+        instrutorMapper.updateEntityFromDTO(dto, instrutor);
 
-        return instrutorRepository.save(instrutor);
+        return instrutorMapper.toDto(instrutorRepository.save(instrutor));
     }
 }

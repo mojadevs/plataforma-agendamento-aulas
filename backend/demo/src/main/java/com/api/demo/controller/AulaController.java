@@ -1,6 +1,11 @@
 package com.api.demo.controller;
+import com.api.demo.dto.aula.AulaCreateDTO;
+import com.api.demo.dto.aula.AulaResponseDTO;
+import com.api.demo.dto.aula.AulaUpdateDTO;
 import com.api.demo.services.AlunoServices;
 import com.api.demo.services.AulaServices;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Aula;
@@ -17,35 +22,42 @@ public class AulaController {
     }
 
     @GetMapping("/")
-    public List<Aula> findAll(){return aulaServices.findAll();}
+    public ResponseEntity<List<AulaResponseDTO>> findAll(){
+        List<AulaResponseDTO> aulaResponseDTOList = aulaServices.findAll();
+        return ResponseEntity.ok(aulaResponseDTOList);
+    }
 
     @GetMapping("/{id}")
-    public Aula findById(
+    public ResponseEntity<AulaResponseDTO> findById(
             @PathVariable Long id
     ){
-        return aulaServices.findById(id);
+        AulaResponseDTO aulaResponseDTO = aulaServices.findById(id);
+        return ResponseEntity.ok(aulaResponseDTO);
     }
 
     @PostMapping("/")
-    public Aula save(
-            @RequestBody Aula aula
-    ){
-        return aulaServices.save(aula);
+    public ResponseEntity<AulaResponseDTO> save(
+            @RequestBody AulaCreateDTO aulaCreateDTO
+            ){
+        AulaResponseDTO aulaResponseDTO = aulaServices.save(aulaCreateDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(aulaResponseDTO);
     }
 
     @PutMapping("/{id}")
-    public Aula update(
+    public ResponseEntity<AulaResponseDTO> update(
             @PathVariable Long id,
-            @RequestBody Aula aula
-    ){
-        return aulaServices.update(id, aula);
+            @RequestBody AulaUpdateDTO dto
+            ){
+        AulaResponseDTO aulaResponseDTO = aulaServices.update(id, dto);
+        return ResponseEntity.ok(aulaResponseDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(
+    public ResponseEntity<Void> delete(
             @PathVariable Long id
     ){
         aulaServices.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
 

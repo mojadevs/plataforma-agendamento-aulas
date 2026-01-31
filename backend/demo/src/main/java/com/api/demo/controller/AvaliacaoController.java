@@ -1,6 +1,11 @@
 package com.api.demo.controller;
+import com.api.demo.dto.avaliacao.AvaliacaoCreateDTO;
+import com.api.demo.dto.avaliacao.AvaliacaoResponseDTO;
+import com.api.demo.dto.avaliacao.AvaliacaoUpdateDTO;
 import com.api.demo.services.AlunoServices;
 import com.api.demo.services.AvaliacaoServices;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Avaliacao;
@@ -17,36 +22,40 @@ public class AvaliacaoController {
     }
 
     @GetMapping("/")
-    public List<Avaliacao> findAll(){
-        return avaliacaoServices.findAll();
+    public ResponseEntity<List<AvaliacaoResponseDTO>> findAll(){
+        List<AvaliacaoResponseDTO> avaliacaoResponseDTOList = avaliacaoServices.findAll();
+        return ResponseEntity.ok(avaliacaoResponseDTOList);
     }
 
     @GetMapping("/{id}")
-    public Avaliacao findById(
+    public ResponseEntity<AvaliacaoResponseDTO> findById(
             @PathVariable Long id
     ){
-        return avaliacaoServices.findById(id);
+        return ResponseEntity.ok(avaliacaoServices.findById(id));
     }
 
     @PostMapping("/")
-    public Avaliacao save(
-            @RequestBody Avaliacao avaliacao
+    public ResponseEntity<AvaliacaoResponseDTO> save(
+            @RequestBody AvaliacaoCreateDTO dto
     ){
-        return avaliacaoServices.save(avaliacao);
+        AvaliacaoResponseDTO avaliacaoResponseDTO = avaliacaoServices.save(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(avaliacaoResponseDTO);
     }
 
     @PutMapping("/{id}")
-    public Avaliacao update(
+    public ResponseEntity<AvaliacaoResponseDTO> update(
             @PathVariable Long id,
-            @RequestBody Avaliacao avaliacao
-    ){
-        return avaliacaoServices.update(id, avaliacao);
+            @RequestBody AvaliacaoUpdateDTO dto
+            ){
+        AvaliacaoResponseDTO avaliacaoResponseDTO =  avaliacaoServices.update(id, dto);
+        return ResponseEntity.ok(avaliacaoResponseDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(
+    public ResponseEntity<Void> delete(
             @PathVariable Long id
     ){
         avaliacaoServices.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

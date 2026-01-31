@@ -1,5 +1,10 @@
 package com.api.demo.controller;
+import com.api.demo.dto.aluno.AlunoCreateDTO;
+import com.api.demo.dto.aluno.AlunoResponseDTO;
+import com.api.demo.dto.aluno.AlunoUpdateDTO;
 import com.api.demo.services.AlunoServices;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Aluno;
@@ -16,37 +21,43 @@ public class AlunoController {
     }
 
     @GetMapping("/")
-    public List<Aluno> findAll(){
-        return alunoServices.findAll();
+    public ResponseEntity<List<AlunoResponseDTO>> findAll(){
+        List<AlunoResponseDTO> alunoResponseDTOList = alunoServices.findAll();
+        return ResponseEntity.ok(alunoResponseDTOList);
     }
 
     @GetMapping("/{id}")
-    public Aluno findById(
+    public ResponseEntity<AlunoResponseDTO> findById(
             @PathVariable Long id
     ){
-        return alunoServices.findById(id);
+        AlunoResponseDTO alunoResponseDTO = alunoServices.findById(id);
+
+        return ResponseEntity.ok(alunoResponseDTO);
     }
 
     @PostMapping("/")
-    public void save(
-            @RequestBody Aluno aluno
+    public ResponseEntity<AlunoResponseDTO> save(
+            @RequestBody AlunoCreateDTO dto
     ){
-        alunoServices.save(aluno);
+        AlunoResponseDTO alunoResponseDTO = alunoServices.save(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(alunoResponseDTO);
     }
 
     @PutMapping("/{id}")
-    public Aluno update(
+    public ResponseEntity<AlunoResponseDTO> update(
             @PathVariable Long id,
-            @RequestBody Aluno aluno
-    ){
-        return alunoServices.update(id, aluno);
+            @RequestBody AlunoUpdateDTO dto
+            ){
+        AlunoResponseDTO alunoResponseDTO =  alunoServices.update(id, dto);
+        return ResponseEntity.ok(alunoResponseDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(
+    public ResponseEntity<Void> delete(
             @PathVariable Long id
     ){
         alunoServices.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
 

@@ -1,27 +1,43 @@
 package com.api.demo.services;
+import com.api.demo.dto.pagamento.PagamentoCreateDTO;
+import com.api.demo.dto.pagamento.PagamentoResponseDTO;
+import com.api.demo.dto.pagamento.PagamentoUpdateDTO;
+import com.api.demo.mapper.PagamentoMapper;
 import com.api.demo.model.Pagamento;
 import com.api.demo.repository.PagamentoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PagamentoServices {
 
     private final PagamentoRepository pagamentoRepository;
+    private final PagamentoMapper pagamentoMapper;
 
-    public PagamentoServices(PagamentoRepository pagamentoRepository){
+    public PagamentoServices(PagamentoRepository pagamentoRepository, PagamentoMapper pagamentoMapper){
         this.pagamentoRepository = pagamentoRepository;
+        this.pagamentoMapper = pagamentoMapper;
     }
 
-    public List<Pagamento> findAll(){
-        return pagamentoRepository.findAll();
+    public List<PagamentoResponseDTO> findAll(){
+        List<Pagamento> pagamentos = pagamentoRepository.findAll();
+        List<PagamentoResponseDTO> pagamentoResponseDTOList = new ArrayList<>();
+
+        for(Pagamento pagamento : pagamentos){
+            pagamentoResponseDTOList.add(pagamentoMapper.toDto(pagamento));
+        }
+
+        return pagamentoResponseDTOList;
     }
 
-    public Pagamento findById(Long id){
+    public PagamentoResponseDTO findById(Long id){
         Pagamento pagamento = pagamentoRepository.findById(id).orElseThrow(() -> {
             return new RuntimeException("Pagamento não encontrada");
         });
 
-        return pagamento;
+        PagamentoResponseDTO pagamentoResponseDTO = pagamentoMapper.toDto(pagamento);
+
+        return pagamentoResponseDTO;
     }
 
     public void delete(long id){
@@ -32,24 +48,19 @@ public class PagamentoServices {
         pagamentoRepository.delete(pagamento);
     }
 
-    public Pagamento save(Pagamento pagamento){
-        return pagamentoRepository.save(pagamento);
+    public PagamentoResponseDTO save(PagamentoCreateDTO dto){
+        Pagamento pagamento = pagamentoMapper.toEntity(dto);
+        PagamentoResponseDTO pagamentoResponseDTO = pagamentoMapper.toDto(pagamentoRepository.save(pagamento));
+        return pagamentoResponseDTO;
     }
 
-    public Pagamento update(Long id, Pagamento pagamento_update){
+    public PagamentoResponseDTO update(Long id, PagamentoUpdateDTO dto){
         Pagamento pagamento = pagamentoRepository.findById(id).orElseThrow(()-> {
             return new RuntimeException("Pagamento não encontrado");
         });
 
-        pagamento.setAula(pagamento_update.getAula());
-        pagamento.setData_confirmacao(pagamento_update.getData_confirmacao());
-        pagamento.setMetodo_pagamento(pagamento_update.getMetodo_pagamento());
-        pagamento.setData_criacao(pagamento_update.getData_criacao());
-        pagamento.setGateway_id(pagamento_update.getGateway_id());
-        pagamento.setStatus(pagamento_update.getStatus());
-        pagamento.setValor_instrutor(pagamento_update.getValor_instrutor());
-        pagamento.setValor_plataforma(pagamento_update.getValor_plataforma());
+        pagamentoMapper.updateEntityFromDTO(dto, pagamento);
 
-        return pagamentoRepository.save(pagamento);
+        return pagamentoMapper.toDto(pagamentoRepository.save(pagamento));
     }
 }

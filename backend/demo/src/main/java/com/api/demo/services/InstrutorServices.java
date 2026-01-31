@@ -5,6 +5,7 @@ import com.api.demo.dto.instrutor.InstrutorUpdateDTO;
 import com.api.demo.mapper.InstrutorMapper;
 import com.api.demo.model.Instrutor;
 import com.api.demo.repository.InstrutorRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,12 @@ public class InstrutorServices {
 
     private final InstrutorRepository instrutorRepository;
     private final InstrutorMapper instrutorMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public InstrutorServices(InstrutorRepository instrutorRepository, InstrutorMapper instrutorMapper){
+    public InstrutorServices(InstrutorRepository instrutorRepository, InstrutorMapper instrutorMapper, PasswordEncoder passwordEncoder){
         this.instrutorRepository = instrutorRepository;
         this.instrutorMapper = instrutorMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<InstrutorResponseDTO> findAll(){
@@ -50,6 +53,7 @@ public class InstrutorServices {
 
     public InstrutorResponseDTO save(InstrutorCreateDTO dto){
         Instrutor instrutor = instrutorMapper.toEntity(dto);
+        instrutor.setSenha(passwordEncoder.encode(instrutor.getSenha()));
         return instrutorMapper.toDto(instrutorRepository.save(instrutor));
     }
 

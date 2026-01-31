@@ -6,6 +6,7 @@ import com.api.demo.dto.aluno.AlunoUpdateDTO;
 import com.api.demo.mapper.AlunoMapper;
 import com.api.demo.model.Aluno;
 import com.api.demo.repository.AlunoRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,12 @@ public class AlunoServices {
 
     private final AlunoRepository alunoRepository;
     private final AlunoMapper alunoMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public AlunoServices(AlunoRepository alunoRepository, AlunoMapper alunoMapper){
+    public AlunoServices(AlunoRepository alunoRepository, AlunoMapper alunoMapper, PasswordEncoder passwordEncoder){
         this.alunoRepository = alunoRepository;
         this.alunoMapper = alunoMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<AlunoResponseDTO> findAll(){
@@ -51,6 +54,7 @@ public class AlunoServices {
 
     public AlunoResponseDTO save(AlunoCreateDTO dto){
         Aluno aluno = alunoMapper.toEntity(dto);
+        aluno.setSenha(passwordEncoder.encode(dto.getSenha()));
         return alunoMapper.toDto(alunoRepository.save(aluno));
     }
 

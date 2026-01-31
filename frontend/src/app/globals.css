@@ -1,13 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --cor-primaria: oklch(62.7% 0.194 149.214);
-  --cor-secundaria: oklch(52.935% 0.15121 148.528);
-  --cor-terciaria: oklch(96.168% 0.05855 157.296);
-  --cor-fundo-primaria: #F9F7F3;
-  --cor-fundo-secundaria: #F1EEE7;
+  --cor-primaria: rgb(78, 151, 209);
+  --cor-secundaria: rgb(0, 109, 178);
+  --cor-fundo-primaria: rgb(249, 247, 243);
+  --cor-fundo-secundaria: rgb(238, 233, 224);
 }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+html{
+  scroll-behavior: smooth;
 }

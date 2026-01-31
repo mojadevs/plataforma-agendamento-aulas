@@ -2,6 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import styles from "./home.module.css";
+
+interface Municipio {
+  id: number;
+  nome: string;
+}
 
 const slides = [
   {
@@ -10,7 +16,7 @@ const slides = [
     description:
       "Encontre instrutores de direção licenciados pelo DETRAN e agende suas aulas com segurança, praticidade e confiança.",
     buttonText: "Saiba mais",
-    buttonLink: "/sobre",
+    buttonLink: "#saiba-mais",
   },
   {
     image: "/img-Jdrive-instrutor.jpg",
@@ -18,94 +24,150 @@ const slides = [
     description:
       "Cadastre-se como instrutor, encontre alunos perto de você e aumente sua renda com liberdade e segurança.",
     buttonText: "Seja um instrutor",
-    buttonLink: "/instrutor",
+    buttonLink: "/cadastro/instrutor",
   },
 ];
 
 export default function Home() {
   const [current, setCurrent] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [estadoSelecionado, setEstadoSelecionado] = useState("");
+  const [municipioSelecionado, setMunicipioSelecionado] = useState("");
+  const [municipios, setMunicipios] = useState<Municipio[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setMounted(true);
 
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 6000);
+    }, 9000);
 
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (!estadoSelecionado) {
+      setMunicipios([]);
+      setMunicipioSelecionado("");
+      return;
+    }
+
+    setLoading(true);
+
+    fetch(
+      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoSelecionado}/municipios?orderBy=nome`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setMunicipios(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [estadoSelecionado]);
+
   if (!mounted) return null;
 
   return (
-    <main className="min-h-[calc(100vh-80px)] bg-(--cor-fundo-primaria) flex justify-center items-center px-6">
-      <div className="w-full max-w-6xl bg-(--cor-fundo-secundaria) rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.12)] p-10 flex gap-12">
-
+    <main className={styles.main}>
+      <div className={styles.container}>
         {/* BUSCA */}
-        <div className="w-1/3 bg-(--cor-fundo-primaria) rounded-2xl p-8 flex flex-col gap-6 shadow-md">
-          <h2 className="text-xl font-semibold text-gray-800">
-            Encontre um instrutor
-          </h2>
+        <div className={styles.search}>
+          <h2 className={styles.searchTitle}>Encontre um instrutor</h2>
 
-          <select className="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-(--cor-primaria)">
-            <option>Selecione o estado</option>
-            <option>São Paulo</option>
-            <option>Rio de Janeiro</option>
-            <option>Minas Gerais</option>
+          <select
+            value={estadoSelecionado}
+            onChange={(e) => setEstadoSelecionado(e.target.value)}
+            className={styles.select}
+          >
+            <option value="">Selecione o estado</option>
+            <option value="AC">Acre</option>
+            <option value="AL">Alagoas</option>
+            <option value="AP">Amapá</option>
+            <option value="AM">Amazonas</option>
+            <option value="BA">Bahia</option>
+            <option value="CE">Ceará</option>
+            <option value="DF">Distrito Federal</option>
+            <option value="ES">Espírito Santo</option>
+            <option value="GO">Goiás</option>
+            <option value="MA">Maranhão</option>
+            <option value="MT">Mato Grosso</option>
+            <option value="MS">Mato Grosso do Sul</option>
+            <option value="MG">Minas Gerais</option>
+            <option value="PA">Pará</option>
+            <option value="PB">Paraíba</option>
+            <option value="PR">Paraná</option>
+            <option value="PE">Pernambuco</option>
+            <option value="PI">Piauí</option>
+            <option value="RJ">Rio de Janeiro</option>
+            <option value="RN">Rio Grande do Norte</option>
+            <option value="RS">Rio Grande do Sul</option>
+            <option value="RO">Rondônia</option>
+            <option value="RR">Roraima</option>
+            <option value="SC">Santa Catarina</option>
+            <option value="SP">São Paulo</option>
+            <option value="SE">Sergipe</option>
+            <option value="TO">Tocantins</option>
           </select>
 
-          <input
-            type="text"
-            placeholder="Digite sua cidade"
-            className="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-(--cor-primaria)"
-          />
+          <select
+            value={municipioSelecionado}
+            onChange={(e) => setMunicipioSelecionado(e.target.value)}
+            disabled={!estadoSelecionado || loading}
+            className={styles.select}
+          >
+            <option value="">
+              {loading
+                ? "Carregando municípios..."
+                : "Selecione o município"}
+            </option>
 
-          <button className="bg-(--cor-primaria) text-white py-3 rounded-lg hover:bg-(--cor-secundaria) transition shadow-md">
-            Buscar
-          </button>
+            {municipios.map((m) => (
+              <option key={m.id} value={m.nome}>
+                {m.nome}
+              </option>
+            ))}
+          </select>
+
+          <button className={styles.button}>Buscar</button>
         </div>
 
-        {/* HERO SLIDER */}
-        <div className="w-2/3 relative h-105 rounded-3xl overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.15)]">
-
-          {/* SLIDES */}
+        {/* SLIDER */}
+        <div className={styles.slider}>
           <div
-            className="absolute inset-0 flex transition-transform duration-700 ease-in-out"
+            className={styles.slides}
             style={{ transform: `translateX(-${current * 100}%)` }}
           >
             {slides.map((slide, index) => (
-              <div key={index} className="relative w-full h-full shrink-0">
+              <div key={index} className={styles.slide}>
                 <Image
                   src={slide.image}
                   alt={slide.title}
                   fill
-                  className="object-cover"
+                  className={styles.image}
                   priority={index === 0}
                 />
-                <div className="absolute inset-0 bg-black/50" />
+                <div className={styles.overlay} />
               </div>
             ))}
           </div>
 
           {/* CONTEÚDO */}
-          <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-12 gap-6">
-            <h1 className="text-4xl font-bold text-white max-w-2xl">
-              {slides[current].title}
-            </h1>
-
-            <p className="text-white/90 max-w-xl leading-relaxed">
+          <div className={styles.content}>
+            <h1 className={styles.title}>{slides[current].title}</h1>
+            <p className={styles.description}>
               {slides[current].description}
             </p>
 
-            <a
-              href={slides[current].buttonLink}
-              className="px-10 py-4 bg-(--cor-primaria) text-white rounded-xl hover:bg-(--cor-secundaria) transition font-medium shadow-lg"
-            >
+            <a href={slides[current].buttonLink} className={styles.buttonSlide}>
               {slides[current].buttonText}
             </a>
           </div>
         </div>
+      </div>
+      <div className={styles.divider} />
+    <div id="saiba-mais" className={styles.saibaMais}>
+        <h2>Seção Saiba Mais</h2>
       </div>
     </main>
   );

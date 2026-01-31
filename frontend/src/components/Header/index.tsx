@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CadastroBox from "../cadastroBox";
 
 export default function Header() {
   return (
@@ -22,14 +23,8 @@ export default function Header() {
             Login
           </Link>
 
-          <Link
-            href="/cadastrar"
-            className="px-5 py-2 bg-white text-(--cor-primaria) rounded-full hover:bg-gray-300 transition"
-          >
-            Cadastrar
-          </Link>
+          <CadastroBox/>
         </nav>
-
       </div>
     </header>
   );

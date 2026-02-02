@@ -2,14 +2,16 @@ package com.api.demo.jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
 import java.util.Date;
 
 @Service
 public class JwtServices {
 
-    private static final String SECRET_KEY = "minhaChaveSuperSecreta123"; // guarde em config segura
+    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // guarde em config segura
     private static final long EXPIRATION = 1000 * 60 * 60 * 2; // 2 horas
 
     // Gerar token
@@ -18,7 +20,7 @@ public class JwtServices {
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .signWith(key)
                 .compact();
     }
 
@@ -39,7 +41,7 @@ public class JwtServices {
 
     private Claims getClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(key)
                 .parseClaimsJws(token)
                 .getBody();
     }

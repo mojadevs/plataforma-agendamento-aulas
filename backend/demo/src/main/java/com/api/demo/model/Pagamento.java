@@ -7,10 +7,11 @@ import java.time.LocalDate;
 public class Pagamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_pagamento")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_aula")
+    @JoinColumn(name = "aula_id_aula")
     private Aula aula;
 
     private String gateway_id;

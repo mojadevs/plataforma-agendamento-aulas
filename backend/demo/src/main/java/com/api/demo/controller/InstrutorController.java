@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Instrutor;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/instrutores")
 public class InstrutorController {
 
@@ -41,6 +41,7 @@ public class InstrutorController {
             @RequestBody InstrutorCreateDTO dto
     ){
         InstrutorResponseDTO instrutorResponseDTO =  instrutorServices.save(dto);
+        System.out.println(instrutorResponseDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(instrutorResponseDTO);
     }
 

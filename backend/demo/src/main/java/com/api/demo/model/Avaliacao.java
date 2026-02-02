@@ -8,10 +8,11 @@ import java.time.LocalDate;
 public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_avaliacao")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_aula")
+    @JoinColumn(name = "aula_id_aula")
     private Aula aula;
 
     private Integer nota;

@@ -12,14 +12,13 @@ import java.time.LocalDate;
 public class Instrutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_instrutor;
 
     private String nome;
     private String email;
     private String senha;
     private String telefone;
     private Double preco_hora;
-    private LocalDate data_cadastro;
     private Boolean ativo;
 
     public Boolean getAtivo() {
@@ -30,14 +29,6 @@ public class Instrutor {
         this.ativo = ativo;
     }
 
-    public LocalDate getData_cadastro() {
-        return data_cadastro;
-    }
-
-    public void setData_cadastro(LocalDate data_cadastro) {
-        this.data_cadastro = data_cadastro;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -46,12 +37,12 @@ public class Instrutor {
         this.email = email;
     }
 
-    public Long getId_instrutor() {
-        return id;
+    public Long getId() {
+        return id_instrutor;
     }
 
-    public void setId_instrutor(Long id) {
-        this.id = id;
+    public void setId(Long id) {
+        this.id_instrutor = id;
     }
 
     public String getNome() {

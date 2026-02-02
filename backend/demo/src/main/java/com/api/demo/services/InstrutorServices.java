@@ -6,10 +6,12 @@ import com.api.demo.mapper.InstrutorMapper;
 import com.api.demo.model.Instrutor;
 import com.api.demo.repository.InstrutorRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class InstrutorServices {
 
     private final InstrutorRepository instrutorRepository;
@@ -52,6 +54,7 @@ public class InstrutorServices {
     }
 
     public InstrutorResponseDTO save(InstrutorCreateDTO dto){
+
         Instrutor instrutor = instrutorMapper.toEntity(dto);
         instrutor.setSenha(passwordEncoder.encode(instrutor.getSenha()));
         return instrutorMapper.toDto(instrutorRepository.save(instrutor));

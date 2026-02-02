@@ -4,6 +4,7 @@ import com.api.demo.dto.aluno.AlunoResponseDTO;
 import com.api.demo.dto.aluno.AlunoUpdateDTO;
 import com.api.demo.model.Aluno;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")

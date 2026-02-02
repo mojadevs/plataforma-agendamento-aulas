@@ -7,10 +7,12 @@ import com.api.demo.mapper.AlunoMapper;
 import com.api.demo.model.Aluno;
 import com.api.demo.repository.AlunoRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class AlunoServices {
 
     private final AlunoRepository alunoRepository;
@@ -28,8 +30,10 @@ public class AlunoServices {
         List<AlunoResponseDTO> alunoResponseDTOList = new ArrayList<>();
 
         for(Aluno aluno : alunos){
+            System.out.println(aluno.getNome());
             alunoResponseDTOList.add(alunoMapper.toDto(aluno));
         }
+
 
         return alunoResponseDTOList;
     }

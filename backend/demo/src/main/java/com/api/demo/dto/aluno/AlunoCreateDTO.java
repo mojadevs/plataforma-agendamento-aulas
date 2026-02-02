@@ -8,7 +8,6 @@ public class AlunoCreateDTO {
     private String senha;
     private Boolean ativo;
     private String email;
-    private LocalDate data_cadastro;
 
     public Boolean getAtivo() {
         return ativo;
@@ -16,14 +15,6 @@ public class AlunoCreateDTO {
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
-    }
-
-    public LocalDate getData_cadastro() {
-        return data_cadastro;
-    }
-
-    public void setData_cadastro(LocalDate data_cadastro) {
-        this.data_cadastro = data_cadastro;
     }
 
     public String getEmail() {

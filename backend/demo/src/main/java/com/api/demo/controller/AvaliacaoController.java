@@ -2,6 +2,7 @@ package com.api.demo.controller;
 import com.api.demo.dto.avaliacao.AvaliacaoCreateDTO;
 import com.api.demo.dto.avaliacao.AvaliacaoResponseDTO;
 import com.api.demo.dto.avaliacao.AvaliacaoUpdateDTO;
+import com.api.demo.model.Aula;
 import com.api.demo.services.AlunoServices;
 import com.api.demo.services.AvaliacaoServices;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Avaliacao;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/avaliacoes")
 public class AvaliacaoController {
 

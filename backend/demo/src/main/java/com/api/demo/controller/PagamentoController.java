@@ -16,7 +16,7 @@ import com.api.demo.model.Pagamento;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/pagamentos")
 public class PagamentoController {
 

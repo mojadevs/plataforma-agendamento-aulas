@@ -8,6 +8,7 @@ import java.time.LocalTime;
 public class Aula {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_aula")
     private Long id;
 
     @ManyToOne
@@ -18,10 +19,10 @@ public class Aula {
     @JoinColumn(name = "id_instrutor")
     private Instrutor instrutor;
 
-    private LocalDate data_hora;
+    private LocalDate dataHora;
     private LocalTime duracao;
     private String status;
-    private Double valor_total;
+    private Double valorTotal;
 
     public Aluno getAluno() {
         return aluno;
@@ -29,14 +30,6 @@ public class Aula {
 
     public void setAluno(Aluno aluno) {
         this.aluno = aluno;
-    }
-
-    public LocalDate getData_hora() {
-        return data_hora;
-    }
-
-    public void setData_hora(LocalDate data_hora) {
-        this.data_hora = data_hora;
     }
 
     public LocalTime getDuracao() {
@@ -71,11 +64,19 @@ public class Aula {
         this.status = status;
     }
 
-    public Double getValor_total() {
-        return valor_total;
+    public LocalDate getDataHora() {
+        return dataHora;
     }
 
-    public void setValor_total(Double valor_total) {
-        this.valor_total = valor_total;
+    public void setDataHora(LocalDate dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 }

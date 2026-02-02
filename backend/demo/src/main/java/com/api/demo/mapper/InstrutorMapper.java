@@ -6,11 +6,14 @@ import com.api.demo.dto.instrutor.InstrutorUpdateDTO;
 import com.api.demo.model.Avaliacao;
 import com.api.demo.model.Instrutor;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface InstrutorMapper {
+    @Mapping(source = "precoHora", target = "preco_hora")
     Instrutor toEntity(InstrutorCreateDTO dto);
+    @Mapping(source = "preco_hora", target = "precoHora")
     InstrutorResponseDTO toDto(Instrutor instrutor);
     void updateEntityFromDTO(InstrutorUpdateDTO dto, @MappingTarget Instrutor instrutor);
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Aula;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/aulas")
 public class AulaController {
 

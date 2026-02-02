@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.api.demo.model.Aluno;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/alunos")
 public class AlunoController {
 
@@ -23,6 +23,7 @@ public class AlunoController {
     @GetMapping("/")
     public ResponseEntity<List<AlunoResponseDTO>> findAll(){
         List<AlunoResponseDTO> alunoResponseDTOList = alunoServices.findAll();
+        System.out.println(alunoResponseDTOList + "- print do controller");
         return ResponseEntity.ok(alunoResponseDTOList);
     }
 
@@ -40,6 +41,7 @@ public class AlunoController {
             @RequestBody AlunoCreateDTO dto
     ){
         AlunoResponseDTO alunoResponseDTO = alunoServices.save(dto);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(alunoResponseDTO);
     }
 

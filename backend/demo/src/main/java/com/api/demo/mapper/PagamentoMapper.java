@@ -28,6 +28,13 @@ public interface PagamentoMapper {
     @Mapping(source = "data_criacao", target = "dataCriacao")
     @Mapping(source = "data_confirmacao", target = "dataConfirmacao")
     PagamentoResponseDTO toDto(Pagamento pagamento);
+    @Mapping(source = "idAula", target = "aula.id")
+    @Mapping(source = "gatewayId", target = "gateway_id")
+    @Mapping(source = "valorPlataforma", target = "valor_plataforma")
+    @Mapping(source = "valorInstrutor", target = "valor_instrutor")
+    @Mapping(source = "metodoPagamento", target = "metodo_pagamento")
+    @Mapping(source = "dataCriacao", target = "data_criacao")
+    @Mapping(source = "dataConfirmacao", target = "data_confirmacao")
     @Mapping(target = "aula", ignore = true)
     void updateEntityFromDTO(PagamentoUpdateDTO dto, @MappingTarget Pagamento pagamento);
 }

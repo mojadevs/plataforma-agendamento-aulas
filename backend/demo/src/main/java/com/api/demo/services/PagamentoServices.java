@@ -76,14 +76,12 @@ public class PagamentoServices {
         Pagamento pagamento = pagamentoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pagamento não encontrado"));
 
-
         pagamentoMapper.updateEntityFromDTO(dto, pagamento);
 
-        if(dto.getIdAula() != null){
-            Aula aula = aulaRepository.findById(dto.getIdAula())
-                    .orElseThrow(() -> new RuntimeException("Aula não encontrada"));
-            pagamento.setAula(aula);
-        }
+        Aula aula = aulaRepository.findById(dto.getIdAula())
+                .orElseThrow(() -> new RuntimeException("Aula não encontrada"));
+        pagamento.setAula(aula);
+
 
         Pagamento pagamentoSalvo = pagamentoRepository.save(pagamento);
         return pagamentoMapper.toDto(pagamentoSalvo);

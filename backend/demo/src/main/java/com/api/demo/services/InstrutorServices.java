@@ -2,6 +2,7 @@ package com.api.demo.services;
 import com.api.demo.dto.instrutor.InstrutorCreateDTO;
 import com.api.demo.dto.instrutor.InstrutorResponseDTO;
 import com.api.demo.dto.instrutor.InstrutorUpdateDTO;
+import com.api.demo.jwt.JwtServices;
 import com.api.demo.mapper.InstrutorMapper;
 import com.api.demo.model.Instrutor;
 import com.api.demo.repository.InstrutorRepository;
@@ -17,11 +18,13 @@ public class InstrutorServices {
     private final InstrutorRepository instrutorRepository;
     private final InstrutorMapper instrutorMapper;
     private final PasswordEncoder passwordEncoder;
+    private final JwtServices jwtServices;
 
-    public InstrutorServices(InstrutorRepository instrutorRepository, InstrutorMapper instrutorMapper, PasswordEncoder passwordEncoder){
+    public InstrutorServices(JwtServices jwtServices,InstrutorRepository instrutorRepository, InstrutorMapper instrutorMapper, PasswordEncoder passwordEncoder){
         this.instrutorRepository = instrutorRepository;
         this.instrutorMapper = instrutorMapper;
         this.passwordEncoder = passwordEncoder;
+        this.jwtServices = jwtServices;
     }
 
     public List<InstrutorResponseDTO> findAll(){
@@ -54,10 +57,12 @@ public class InstrutorServices {
     }
 
     public InstrutorResponseDTO save(InstrutorCreateDTO dto){
-
         Instrutor instrutor = instrutorMapper.toEntity(dto);
         instrutor.setSenha(passwordEncoder.encode(instrutor.getSenha()));
-        return instrutorMapper.toDto(instrutorRepository.save(instrutor));
+        InstrutorResponseDTO instrutorResponseDTO = instrutorMapper.toDto(instrutorRepository.save(instrutor));
+        String token = jwtServices.generateToken(instrutor.getEmail());
+        instrutorResponseDTO.setToken(token);
+        return instrutorResponseDTO;
     }
 
     public InstrutorResponseDTO update(Long id, InstrutorUpdateDTO dto){

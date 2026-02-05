@@ -8,6 +8,15 @@ public class AlunoResponseDTO {
     private String email;
     private String telefone;
     private Boolean ativo;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getTelefone() {
         return telefone;

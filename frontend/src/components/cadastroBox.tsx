@@ -34,13 +34,13 @@ export default function CadastroBox() {
         <div className={styles.dropdown}>
             <div className={styles.itemContainer}>
                 <img src="icon-aluno.png" className={styles.iconAluno} />
-                <Link href="/cadastro/aluno">
+                <Link href="/aluno/cadastro">
                     Aluno
                 </Link>
             </div>
             <div className={styles.itemContainer}>
                 <img src="icon-instrutor.png" className={styles.iconInstrutor} />
-                <Link href="/cadastro/instrutor">
+                <Link href="/instrutor/cadastro">
                     Instrutor
                 </Link>
             </div>

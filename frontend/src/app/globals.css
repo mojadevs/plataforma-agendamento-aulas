@@ -3,8 +3,8 @@
 :root {
   --cor-primaria: rgb(78, 151, 209);
   --cor-secundaria: rgb(0, 109, 178);
-  --cor-fundo-primaria: rgb(249, 247, 243);
-  --cor-fundo-secundaria: rgb(238, 233, 224);
+  --cor-fundo-primaria: rgb(255, 250, 239);
+  --cor-fundo-secundaria: rgb(248, 239, 224);
 }
 
 body {

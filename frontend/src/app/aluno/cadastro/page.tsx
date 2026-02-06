@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./cadastro.module.css";
 
 export default function Cadastro() {
+  const router = useRouter();
+
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -17,33 +20,44 @@ export default function Cadastro() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/alunos", {
+      // 1️⃣ CADASTRA ALUNO
+      const cadastroRes = await fetch("/api/alunos", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nome,
           email,
           telefone,
           senha,
-          ativo: true, // exigido pelo DTO
+          ativo: true,
         }),
       });
 
-      if (!res.ok) {
-        throw new Error("Erro ao cadastrar aluno");
+      if (!cadastroRes.ok) {
+        throw new Error("Erro ao cadastrar");
       }
 
-      alert("Aluno cadastrado com sucesso!");
+      // 2️⃣ LOGIN AUTOMÁTICO
+      const loginRes = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+       body: JSON.stringify({
+        email,
+        senha,
+      }),
+      });
+      const data = await loginRes.json()
+      if (!loginRes.ok) {
+        throw new Error("Erro ao autenticar");
+      }
 
-      // limpa o formulário
-      setNome("");
-      setEmail("");
-      setTelefone("");
-      setSenha("");
+      // 3️⃣ SALVA TOKEN
+      document.cookie = `token=${data.token}; path=/; SameSite=Lax`;
+
+      // 4️⃣ REDIRECIONA
+      router.push("/marketplace");
     } catch (err) {
-      setErro("Erro ao cadastrar aluno. Verifique os dados.");
+      setErro("Erro ao cadastrar. Verifique os dados.");
     } finally {
       setLoading(false);
     }
@@ -52,7 +66,7 @@ export default function Cadastro() {
   return (
     <main className={styles.main}>
       <div className={styles.card}>
-        <h1 className={styles.title}>Cadastro</h1>
+        <h1 className={styles.title}>Cadastro de Aluno</h1>
         <p className={styles.subtitle}>
           Preencha os dados para criar sua conta
         </p>
@@ -96,11 +110,7 @@ export default function Cadastro() {
 
           {erro && <p className={styles.errorText}>{erro}</p>}
 
-          <button
-            type="submit"
-            className={styles.button}
-            disabled={loading}
-          >
+          <button className={styles.button} disabled={loading}>
             {loading ? "Cadastrando..." : "Cadastrar"}
           </button>
         </form>

@@ -51,9 +51,7 @@
   padding: 0.75rem 1rem;
   border-radius: 0.6rem;
   border: 2px solid #e5e7eb;
-
   font-size: 0.95rem;
-  transition: border-color 0.25s, box-shadow 0.25s;
 }
 
 .input:focus {
@@ -65,7 +63,6 @@
 .button {
   margin-top: 0.5rem;
   padding: 0.8rem;
-
   border-radius: 0.75rem;
   border: none;
 
@@ -78,37 +75,10 @@
   color: white;
   font-weight: 500;
   cursor: pointer;
-
-  transition: transform 0.25s, box-shadow 0.25s;
 }
 
-.button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-}
-
-/* mensagem de erro */
-.errorText {
+.error {
   color: #dc2626;
   font-size: 0.85rem;
   text-align: center;
-}
-
-/* input number (preço/hora) */
-.input[type="number"] {
-  appearance: textfield;
-}
-
-.input[type="number"]::-webkit-inner-spin-button,
-.input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* botão desabilitado */
-.button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
 }

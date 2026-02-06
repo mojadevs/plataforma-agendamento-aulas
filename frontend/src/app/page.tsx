@@ -167,8 +167,36 @@ export default function Home() {
       </div>
       <div className={styles.divider} />
     <div id="saiba-mais" className={styles.saibaMais}>
-        <h2>Seção Saiba Mais</h2>
-      </div>
+  <div className={styles.saibaMaisGrid}>
+    <div className={styles.saibaCard}>
+      <div className={styles.saibaIcon}>🛡️</div>
+      <h3>Instrutores verificados</h3>
+      <p>
+        Todos os instrutores são licenciados e passam por verificação para
+        garantir segurança, confiança e qualidade no ensino.
+      </p>
+    </div>
+
+    <div className={styles.saibaCard}>
+      <div className={styles.saibaIcon}>📍</div>
+      <h3>Encontre perto de você</h3>
+      <p>
+        Busque instrutores por estado e município, facilitando o agendamento
+        de aulas no seu ritmo e na sua região.
+      </p>
+    </div>
+
+    <div className={styles.saibaCard}>
+      <div className={styles.saibaIcon}>⚙️</div>
+      <h3>Aulas personalizadas</h3>
+      <p>
+        Escolha o instrutor ideal, combine horários e tenha aulas adaptadas
+        ao seu nível e objetivo.
+      </p>
+    </div>
+  </div>
+</div>
+
     </main>
   );
 }

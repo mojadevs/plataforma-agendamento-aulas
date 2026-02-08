@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { logout } from "@/app/actions/auth"; // Importe a action de logout
+import { logout } from "@/app/actions/auth";
 import styles from "./profileBox.module.css";
 
 interface ProfileBoxProps {
@@ -14,7 +14,6 @@ export default function ProfileBox({ nome, role }: ProfileBoxProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Fecha ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -24,10 +23,6 @@ export default function ProfileBox({ nome, role }: ProfileBoxProps) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  // Define o destino baseado no Role
-  const dashboardLink = role === "ALUNO" ? "/marketplace" : "/instrutor/dashboard";
-  const dashboardText = role === "ALUNO" ? "Ir para Marketplace" : "Meu Painel";
 
   return (
     <div className={styles.wrapper} ref={ref}>
@@ -49,9 +44,23 @@ export default function ProfileBox({ nome, role }: ProfileBoxProps) {
             </span>
           </div>
 
-          <Link href={dashboardLink} className={styles.actionLink} onClick={() => setOpen(false)}>
-            {dashboardText}
-          </Link>
+          {/* LÓGICA CONDICIONAL DE BOTÕES */}
+          {role === "ALUNO" ? (
+            <>
+              {/* Botões exclusivos do Aluno */}
+              <Link href="/aluno/perfil" className={styles.actionLink} onClick={() => setOpen(false)}>
+                Meu Perfil
+              </Link>
+              <Link href="/marketplace" className={styles.actionLink} onClick={() => setOpen(false)}>
+                Marketplace
+              </Link>
+            </>
+          ) : (
+            /* Botão exclusivo do Instrutor */
+            <Link href="/instrutor/dashboard" className={styles.actionLink} onClick={() => setOpen(false)}>
+              Meu Painel
+            </Link>
+          )}
 
           <button onClick={() => logout()} className={styles.logoutButton}>
             Sair da conta

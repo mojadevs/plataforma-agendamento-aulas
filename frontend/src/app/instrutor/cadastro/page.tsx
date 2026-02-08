@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { registerInstrutor } from '@/app/actions/auth'
-import styles from './cadastro.module.css'
+import styles from './cadastro.module.css' 
 
 export default function CadastroInstrutorPage() {
   const [error, setError] = useState('')
@@ -31,6 +31,7 @@ export default function CadastroInstrutorPage() {
           <input name="email" type="email" placeholder="E-mail" required className={styles.input} />
           <input name="telefone" type="tel" placeholder="Telefone" required className={styles.input} />
           
+          {/* Campo específico de instrutor: Preço Hora */}
           <input 
             name="precoHora" 
             type="number" 

@@ -24,9 +24,13 @@ public class JwtServices {
                 .compact();
     }
 
-    // Validar token
-    public boolean isTokenValid(String token, String email) {
-        return email.equals(getEmail(token)) && !isTokenExpired(token);
+    public boolean isTokenValid(String token) {
+        try {
+            getClaims(token);
+            return !isTokenExpired(token);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // Extrair email do token

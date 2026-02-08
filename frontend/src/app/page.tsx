@@ -24,7 +24,7 @@ const slides = [
     description:
       "Cadastre-se como instrutor, encontre alunos perto de você e aumente sua renda com liberdade e segurança.",
     buttonText: "Seja um instrutor",
-    buttonLink: "/cadastro/instrutor",
+    buttonLink: "/instrutor/cadastro",
   },
 ];
 
@@ -71,7 +71,6 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.container}>
-        {/* BUSCA */}
         <div className={styles.search}>
           <h2 className={styles.searchTitle}>Encontre um instrutor</h2>
 

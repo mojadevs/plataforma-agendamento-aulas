@@ -87,14 +87,12 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* mensagem de erro */
 .errorText {
   color: #dc2626;
   font-size: 0.85rem;
   text-align: center;
 }
 
-/* input number (preço/hora) */
 .input[type="number"] {
   appearance: textfield;
 }
@@ -105,7 +103,6 @@
   margin: 0;
 }
 
-/* botão desabilitado */
 .button:disabled {
   opacity: 0.6;
   cursor: not-allowed;

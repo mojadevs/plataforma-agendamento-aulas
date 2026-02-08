@@ -1,113 +1,54 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import styles from "./cadastro.module.css";
+import { useState } from 'react'
+import { registerInstrutor } from '@/app/actions/auth'
+import styles from './cadastro.module.css'
 
-export default function Cadastro() {
-  const router = useRouter();
+export default function CadastroInstrutorPage() {
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [senha, setSenha] = useState("");
-  const [precoHora, setPrecoHora] = useState("");
-  const [erro, setErro] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    setErro("");
-    setLoading(true);
-
-    try {
-      // 1️⃣ cadastra aluno
-      const cadastroRes = await fetch("/api/instrutores", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome,
-          email,
-          senha,
-          telefone,
-          precoHora: Number(precoHora),
-          ativo: true,
-        }),
-      });
-      const data=await cadastroRes.json();
-      if (!cadastroRes.ok) {
-  const err = await cadastroRes.text();
-  console.error("Erro cadastro:", err);
-  throw new Error(err);
-}
-
-      document.cookie = `token=${data.token}; path=/; max-age=7200`;
-
-      // 4️⃣ redireciona
-      router.push("/marketplace");
-    } catch {
-      setErro("Erro ao cadastrar instrutor");
-    } finally {
-      setLoading(false);
+  async function handleSubmit(formData: FormData) {
+    setLoading(true)
+    setError('')
+    
+    const result = await registerInstrutor(formData)
+    
+    if (result?.error) {
+      setError(result.error)
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <main className={styles.main}>
       <div className={styles.card}>
-        <h1 className={styles.title}>Cadastro de Instrutor</h1>
+        <h1 className={styles.title}>Área do Instrutor</h1>
+        <p className={styles.subtitle}>Cadastre-se para encontrar novos alunos</p>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <input
-            className={styles.input}
-            placeholder="Nome completo"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
+        <form action={handleSubmit} className={styles.form}>
+          <input name="nome" type="text" placeholder="Nome Completo" required className={styles.input} />
+          <input name="email" type="email" placeholder="E-mail" required className={styles.input} />
+          <input name="telefone" type="tel" placeholder="Telefone" required className={styles.input} />
+          
+          <input 
+            name="precoHora" 
+            type="number" 
+            step="0.01" 
+            placeholder="Preço da aula/hora (R$)" 
+            required 
+            className={styles.input} 
           />
+          
+          <input name="senha" type="password" placeholder="Senha" required className={styles.input} />
 
-          <input
-            className={styles.input}
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          {error && <p className={styles.errorText}>{error}</p>}
 
-          <input
-            className={styles.input}
-            type="password"
-            placeholder="Senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            required
-          />
-
-          <input
-            className={styles.input}
-            placeholder="Telefone"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-            required
-          />
-
-          <input
-            className={styles.input}
-            type="number"
-            placeholder="Preço por hora"
-            value={precoHora}
-            onChange={(e) => setPrecoHora(e.target.value)}
-            required
-          />
-
-          {erro && <p className={styles.errorText}>{erro}</p>}
-
-          <button className={styles.button} disabled={loading}>
-            {loading ? "Cadastrando..." : "Cadastrar"}
+          <button type="submit" className={styles.button} disabled={loading}>
+            {loading ? 'Criando conta...' : 'Começar agora'}
           </button>
         </form>
       </div>
     </main>
-  );
+  )
 }

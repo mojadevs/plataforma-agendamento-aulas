@@ -6,6 +6,24 @@ public class AlunoUpdateDTO {
     private String nome;
     private String telefone;
     private Boolean ativo;
+    private String municipio;
+    private String estado;
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(String municipio) {
+        this.municipio = municipio;
+    }
 
     public Boolean getAtivo() {
         return ativo;

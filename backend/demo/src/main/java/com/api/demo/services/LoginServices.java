@@ -27,11 +27,15 @@ public class LoginServices {
 
     public LoginResponseDTO login(LoginDTO dto){
         Optional<Aluno> alunoOptional = alunoRepository.findByEmail(dto.getEmail());
+
         if(alunoOptional.isPresent()){
+
             Aluno aluno = alunoOptional.get();
             if(passwordEncoder.matches(dto.getSenha(), aluno.getSenha())){
+
                 String token = jwtServices.generateToken(aluno.getEmail());
                 LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+                loginResponseDTO.setId(aluno.getId_aluno());
                 loginResponseDTO.setNome(aluno.getNome());
                 loginResponseDTO.setToken(token);
                 loginResponseDTO.setRole("ALUNO");
@@ -46,6 +50,7 @@ public class LoginServices {
             if(passwordEncoder.matches(dto.getSenha(), instrutor.getSenha())){
                 String token = jwtServices.generateToken(instrutor.getEmail());
                 LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+                loginResponseDTO.setId(instrutor.getId_instrutor());
                 loginResponseDTO.setNome(instrutor.getNome());
                 loginResponseDTO.setToken(token);
                 loginResponseDTO.setRole("INSTRUTOR");
@@ -53,7 +58,6 @@ public class LoginServices {
                 return loginResponseDTO;
             }
         }
-
         throw new RuntimeException("Erro de autenticação");
     }
 }

@@ -13,13 +13,38 @@ public class Instrutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_instrutor;
-
     private String nome;
     private String email;
     private String senha;
     private String telefone;
+    private String endereco;
+    private String estado;
     private Double preco_hora;
     private Boolean ativo;
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Long getId_instrutor() {
+        return id_instrutor;
+    }
+
+    public void setId_instrutor(Long id_instrutor) {
+        this.id_instrutor = id_instrutor;
+    }
 
     public Boolean getAtivo() {
         return ativo;

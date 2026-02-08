@@ -14,8 +14,33 @@ public class Aluno {
     private String email;
     private String senha;
     private String telefone;
-
+    private String endereco;
+    private String estado;
     private Boolean ativo;
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Long getId_aluno() {
+        return id_aluno;
+    }
+
+    public void setId_aluno(Long id_aluno) {
+        this.id_aluno = id_aluno;
+    }
 
     public Boolean getAtivo() {
         return ativo;

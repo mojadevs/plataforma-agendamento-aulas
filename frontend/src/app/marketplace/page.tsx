@@ -1,4 +1,3 @@
-import { logout } from '@/app/actions/auth'
 import styles from './marketplace.module.css'
 
 export default function MarketplacePage() {
@@ -17,12 +16,6 @@ export default function MarketplacePage() {
             <h1 className={styles.welcomeTitle}>Marketplace de Instrutores</h1>
             <p className={styles.cardInfo}>Encontre o melhor profissional para você</p>
           </div>
-          
-          <form action={logout}>
-            <button type="submit" className={styles.logoutButton}>
-              Sair
-            </button>
-          </form>
         </header>
 
         <div className={styles.grid}>

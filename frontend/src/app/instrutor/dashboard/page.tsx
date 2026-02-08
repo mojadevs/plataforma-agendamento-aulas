@@ -1,4 +1,3 @@
-import { logout } from '@/app/actions/auth'
 import styles from './dashboard.module.css'
 
 export default function InstrutorDashboard() {
@@ -11,9 +10,6 @@ export default function InstrutorDashboard() {
             <h1 className={styles.title}>Painel do Instrutor</h1>
             <p className={styles.subtitle}>Gerencie suas aulas e perfil</p>
           </div>
-          <form action={logout}>
-            <button type="submit" className={styles.logoutButton}>Sair</button>
-          </form>
         </header>
 
         <section className={styles.grid}>

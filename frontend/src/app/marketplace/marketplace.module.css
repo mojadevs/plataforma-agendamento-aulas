@@ -31,21 +31,6 @@
   color: #111827;
 }
 
-.logoutButton {
-  padding: 0.6rem 1.2rem;
-  background-color: #fee2e2;
-  color: #991b1b;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.logoutButton:hover {
-  background-color: #fecaca;
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

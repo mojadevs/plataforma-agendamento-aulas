@@ -30,16 +30,6 @@
   color: #6b7280;
 }
 
-.logoutButton {
-  padding: 0.6rem 1.2rem;
-  background: #fee2e2;
-  color: #991b1b;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

@@ -14,16 +14,16 @@ public class Aluno {
     private String email;
     private String senha;
     private String telefone;
-    private String endereco;
+    private String municipio;
     private String estado;
     private Boolean ativo;
 
-    public String getEndereco() {
-        return endereco;
+    public String getMunicipio() {
+        return municipio;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setMunicipio(String municipio) {
+        this.municipio = municipio;
     }
 
     public String getEstado() {

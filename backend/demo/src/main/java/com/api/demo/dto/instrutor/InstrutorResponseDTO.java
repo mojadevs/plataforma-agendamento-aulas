@@ -8,8 +8,26 @@ public class InstrutorResponseDTO {
         private String email;
         private String telefone;
         private Double precoHora;
+        private String municipio;
+        private String estado;
         private Boolean ativo;
         private String token;
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(String municipio) {
+        this.municipio = municipio;
+    }
 
     public String getToken() {
         return token;

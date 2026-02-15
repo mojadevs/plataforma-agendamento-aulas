@@ -1,35 +1,56 @@
-import styles from './dashboard.module.css'
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import styles from "./dashboard.module.css";
+import EditInstrutorForm from "./EditInstrutorForm";
+import { fetchInstrutorById } from "@/app/actions/instrutor";
 
-export default function InstrutorDashboard() {
+export default async function InstrutorDashboard() {
+  const cookieStore = cookies();
+  const id = cookieStore.get("user_id")?.value;
+  const token = cookieStore.get("session_token")?.value;
+
+  if (!id || !token) {
+    redirect("/login");
+  }
+
+  const instrutor = await fetchInstrutorById(id);
+
+  if (!instrutor) {
+    return (
+      <main className={styles.main}>
+        <div className={styles.card}>
+          <p>Erro ao carregar dados do perfil. Tente novamente mais tarde.</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
+  <main className={styles.main}>
+    <div className={styles.container}>
+      
+
+      <section className={styles.card}>
+        <EditInstrutorForm instrutor={instrutor} />
+      </section>
+
+      <section className={styles.card}>
+        <h2 className={styles.aulasTitle}>📅 Aulas Agendadas</h2>
         
-        <header className={styles.header}>
-          <div>
-            <h1 className={styles.title}>Painel do Instrutor</h1>
-            <p className={styles.subtitle}>Gerencie suas aulas e perfil</p>
+        <div className={styles.aulaItem}>
+          <div className={styles.aulaInfo}>
+            <p>João Lima</p>
+            <span>14/09/2026, às 14:30</span>
           </div>
-        </header>
+          <span className={styles.statusTag}>Confirmada</span>
+        </div>
 
-        <section className={styles.grid}>
-          <div className={styles.card}>
-            <h2 className={styles.cardTitle}>Bem-vindo!</h2>
-            <p className={styles.cardText}>
-              Aqui você poderá visualizar seus alunos e atualizar seus dados de contato.
-            </p>
-          </div>
+        <p className={styles.emailText} style={{textAlign: 'center', marginTop: '1rem'}}>
+          Você não tem mais aulas para hoje.
+        </p>
+      </section>
 
-          <div className={styles.card}>
-            <h2 className={styles.cardTitle}>Seu Perfil</h2>
-            <p className={styles.cardText}>
-              Lembre-se de manter seu telefone e preço/hora atualizados para atrair mais alunos.
-            </p>
-            <button className={styles.actionButton}>Editar Perfil</button>
-          </div>
-        </section>
-
-      </div>
-    </main>
-  )
+    </div>
+  </main>
+);
 }

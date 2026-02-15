@@ -21,7 +21,7 @@ export async function login(formData: FormData) {
 
   const data = await response.json()
   
-  createSession(data.token, data.role, data.nome)
+  createSession(data.token, data.role, data.nome, data.id)
 
   if (data.role === 'ALUNO') {
     redirect('/marketplace')
@@ -52,7 +52,7 @@ export async function registerAluno(formData: FormData) {
 
   if (data.token) {
     if (data.token) {
-    createSession(data.token, 'ALUNO', data.nome)
+    createSession(data.token, 'ALUNO', data.nome, data.id)
     redirect('/marketplace')
   }
   }
@@ -82,12 +82,12 @@ export async function registerInstrutor(formData: FormData) {
   const data = await response.json()
 
   if (data.token) {
-    createSession(data.token, 'INSTRUTOR', data.nome)
+    createSession(data.token, 'INSTRUTOR', data.nome, data.id)
     redirect('/instrutor/dashboard')
   }
 }
 
-async function createSession(token: string, role: string, nome: string) {
+async function createSession(token: string, role: string, nome: string, id: string) {
   const cookieStore = cookies()
   
   cookieStore.set('session_token', token, {
@@ -107,12 +107,18 @@ async function createSession(token: string, role: string, nome: string) {
     maxAge: 60 * 60 * 2,
     path: '/',
   })
-}
 
+  cookieStore.set('user_id', id, {
+    httpOnly: true,
+    maxAge: 60 * 60 * 2,
+    path: '/',
+  })
+}
 export async function logout() {
   const cookieStore = cookies()
   cookieStore.delete('session_token')
   cookieStore.delete('user_role')
   cookieStore.delete('user_name')
+  cookieStore.delete('user_id')
   redirect('/login')
 }

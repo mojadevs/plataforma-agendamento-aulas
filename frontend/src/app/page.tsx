@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "./home.module.css";
 
@@ -29,6 +30,7 @@ const slides = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const [current, setCurrent] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [estadoSelecionado, setEstadoSelecionado] = useState("");
@@ -38,11 +40,9 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true);
-
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 9000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -54,7 +54,6 @@ export default function Home() {
     }
 
     setLoading(true);
-
     fetch(
       `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoSelecionado}/municipios?orderBy=nome`
     )
@@ -65,6 +64,14 @@ export default function Home() {
       })
       .catch(() => setLoading(false));
   }, [estadoSelecionado]);
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (estadoSelecionado) params.append("estado", estadoSelecionado);
+    if (municipioSelecionado) params.append("municipio", municipioSelecionado);
+    
+    router.push(`/marketplace?${params.toString()}`);
+  };
 
   if (!mounted) return null;
 
@@ -128,10 +135,11 @@ export default function Home() {
             ))}
           </select>
 
-          <button className={styles.button}>Buscar</button>
+          <button className={styles.button} onClick={handleSearch}>
+            Buscar
+          </button>
         </div>
 
-        {/* SLIDER */}
         <div className={styles.slider}>
           <div
             className={styles.slides}
@@ -151,7 +159,6 @@ export default function Home() {
             ))}
           </div>
 
-          {/* CONTEÚDO */}
           <div className={styles.content}>
             <h1 className={styles.title}>{slides[current].title}</h1>
             <p className={styles.description}>
@@ -164,38 +171,39 @@ export default function Home() {
           </div>
         </div>
       </div>
+      
       <div className={styles.divider} />
-    <div id="saiba-mais" className={styles.saibaMais}>
-  <div className={styles.saibaMaisGrid}>
-    <div className={styles.saibaCard}>
-      <div className={styles.saibaIcon}>🛡️</div>
-      <h3>Instrutores verificados</h3>
-      <p>
-        Todos os instrutores são licenciados e passam por verificação para
-        garantir segurança, confiança e qualidade no ensino.
-      </p>
-    </div>
+      
+      <div id="saiba-mais" className={styles.saibaMais}>
+        <div className={styles.saibaMaisGrid}>
+          <div className={styles.saibaCard}>
+            <div className={styles.saibaIcon}>🛡️</div>
+            <h3>Instrutores verificados</h3>
+            <p>
+              Todos os instrutores são licenciados e passam por verificação para
+              garantir segurança, confiança e qualidade.
+            </p>
+          </div>
 
-    <div className={styles.saibaCard}>
-      <div className={styles.saibaIcon}>📍</div>
-      <h3>Encontre perto de você</h3>
-      <p>
-        Busque instrutores por estado e município, facilitando o agendamento
-        de aulas no seu ritmo e na sua região.
-      </p>
-    </div>
+          <div className={styles.saibaCard}>
+            <div className={styles.saibaIcon}>📍</div>
+            <h3>Encontre perto de você</h3>
+            <p>
+              Busque instrutores por estado e cidade, facilitando o agendamento
+              de aulas na sua região.
+            </p>
+          </div>
 
-    <div className={styles.saibaCard}>
-      <div className={styles.saibaIcon}>⚙️</div>
-      <h3>Aulas personalizadas</h3>
-      <p>
-        Escolha o instrutor ideal, combine horários e tenha aulas adaptadas
-        ao seu nível e objetivo.
-      </p>
-    </div>
-  </div>
-</div>
-
+          <div className={styles.saibaCard}>
+            <div className={styles.saibaIcon}>⚙️</div>
+            <h3>Aulas personalizadas</h3>
+            <p>
+              Escolha o instrutor ideal pra você! combine horários e tenha aulas alinhadas
+              ao seu nível e objetivo.
+            </p>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }

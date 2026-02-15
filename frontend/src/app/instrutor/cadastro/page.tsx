@@ -13,7 +13,6 @@ export default function CadastroInstrutorPage() {
     setError('')
     
     const result = await registerInstrutor(formData)
-    
     if (result?.error) {
       setError(result.error)
       setLoading(false)
@@ -31,7 +30,6 @@ export default function CadastroInstrutorPage() {
           <input name="email" type="email" placeholder="E-mail" required className={styles.input} />
           <input name="telefone" type="tel" placeholder="Telefone" required className={styles.input} />
           
-          {/* Campo específico de instrutor: Preço Hora */}
           <input 
             name="precoHora" 
             type="number" 
